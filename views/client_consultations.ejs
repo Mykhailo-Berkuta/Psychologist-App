@@ -1,0 +1,36 @@
+<%- include('partials/header', {title: 'Консультації клієнта'}) %>
+<h1 class="my-4">Консультації: <%= client.full_name %></h1>
+<p class="text-muted">
+  Телефон: <%= client.phone %> · Статус: <%= client.status %>
+</p>
+
+<% if (consultations.length > 0) { %>
+<div class="table-responsive">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th><th>Дата і час</th><th>Послуга</th><th>Ціна (грн)</th>
+      <th>Статус</th><th>Оплата</th><th>Нотатки</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% consultations.forEach(function(c) { %>
+      <tr>
+        <td><%= c.consultation_id %></td>
+        <td><%= new Date(c.consultation_date).toLocaleString("uk-UA", {dateStyle: "short", timeStyle: "short"}) %></td>
+        <td><%= c.service_name ? c.service_name + " (" + c.format + ")" : "—" %></td>
+        <td><%= c.price || "—" %></td>
+        <td><%= c.status %></td>
+        <td><%= c.payment_status || "—" %></td>
+        <td><%= c.notes || "—" %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+</div>
+<% } else { %>
+  <h4 class="my-4">У цього клієнта ще немає консультацій</h4>
+<% } %>
+
+<a href="/clients" class="btn btn-secondary mb-4">До списку клієнтів</a>
+<%- include('partials/footer') %>

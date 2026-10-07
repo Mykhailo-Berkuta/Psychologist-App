@@ -126,6 +126,31 @@ app.post("/add_consultation", async (req, res) => {
   }
 });
 
+// ---------- КОНСУЛЬТАЦІЇ КОНКРЕТНОГО КЛІЄНТА ----------
+app.get("/client/:id/consultations", async (req, res) => {
+  try {
+    const [clients] = await pool.query(
+      "SELECT * FROM Client WHERE client_id = ?", [req.params.id]
+    );
+    if (clients.length === 0) {
+      return res.status(404).send("Клієнта не знайдено");
+    }
+    const [rows] = await pool.query(
+      `SELECT c.consultation_id, c.consultation_date, c.status, c.payment_status, c.notes,
+              s.service_name, s.format, s.price
+       FROM Consultation c
+       LEFT JOIN ServiceType s ON c.service_id = s.service_id
+       WHERE c.client_id = ?
+       ORDER BY c.consultation_date`,
+      [req.params.id]
+    );
+    res.render("client_consultations", { client: clients[0], consultations: rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Помилка бази даних: " + err.message);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Сервер запущено на порту 3000");
 });
