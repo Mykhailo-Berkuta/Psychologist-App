@@ -1,0 +1,26 @@
+<%- include('partials/header', {title: 'Клієнти'}) %>
+<h1 class="my-4">Список клієнтів</h1>
+<div class="table-responsive">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th><th>ПІБ</th><th>Дата народження</th><th>Телефон</th>
+      <th>Email</th><th>Джерело</th><th>Статус</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% clients.forEach(function(c) { %>
+      <tr>
+        <td><%= c.client_id %></td>
+        <td><%= c.full_name %></td>
+        <td><%= c.birth_date ? new Date(c.birth_date).toLocaleDateString("uk-UA") : "—" %></td>
+        <td><%= c.phone %></td>
+        <td><%= c.email || "—" %></td>
+        <td><%= c.contact_source || "—" %></td>
+        <td><%= c.status %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+</div>
+<%- include('partials/footer') %>

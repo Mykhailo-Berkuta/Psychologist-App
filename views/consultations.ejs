@@ -1,0 +1,26 @@
+<%- include('partials/header', {title: 'Консультації'}) %>
+<h1 class="my-4">Консультації</h1>
+<div class="table-responsive">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th><th>Клієнт</th><th>Послуга</th><th>Дата і час</th>
+      <th>Статус</th><th>Оплата</th><th>Нотатки</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% consultations.forEach(function(c) { %>
+      <tr>
+        <td><%= c.consultation_id %></td>
+        <td><%= c.full_name %></td>
+        <td><%= c.service_name ? c.service_name + " (" + c.format + ")" : "—" %></td>
+        <td><%= new Date(c.consultation_date).toLocaleString("uk-UA", {dateStyle: "short", timeStyle: "short"}) %></td>
+        <td><%= c.status %></td>
+        <td><%= c.payment_status || "—" %></td>
+        <td><%= c.notes || "—" %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+</div>
+<%- include('partials/footer') %>
