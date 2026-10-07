@@ -58,6 +58,26 @@ app.get("/consultations", async (req, res) => {
   }
 });
 
+// ---------- ДОДАВАННЯ КЛІЄНТА ----------
+app.get("/add_client", (req, res) => {
+  res.render("add_client");
+});
+
+app.post("/add_client", async (req, res) => {
+  try {
+    const { full_name, birth_date, phone, email, contact_source, status } = req.body;
+    await pool.query(
+      `INSERT INTO Client (full_name, birth_date, phone, email, contact_source, status)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [full_name, birth_date || null, phone, email || null, contact_source || null, status]
+    );
+    res.redirect("/clients");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Помилка бази даних: " + err.message);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Сервер запущено на порту 3000");
 });
