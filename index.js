@@ -78,6 +78,54 @@ app.post("/add_client", async (req, res) => {
   }
 });
 
+// ---------- ДОДАВАННЯ ПОСЛУГИ ----------
+app.get("/add_service", (req, res) => {
+  res.render("add_service");
+});
+
+app.post("/add_service", async (req, res) => {
+  try {
+    const { service_name, format, duration_min, price, description } = req.body;
+    await pool.query(
+      `INSERT INTO ServiceType (service_name, format, duration_min, price, description)
+       VALUES (?, ?, ?, ?, ?)`,
+      [service_name, format, duration_min, price, description || null]
+    );
+    res.redirect("/services");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Помилка бази даних: " + err.message);
+  }
+});
+
+// ---------- ДОДАВАННЯ КОНСУЛЬТАЦІЇ ----------
+app.get("/add_consultation", async (req, res) => {
+  try {
+    const [clients] = await pool.query("SELECT client_id, full_name FROM Client ORDER BY full_name");
+    const [services] = await pool.query("SELECT service_id, service_name, format FROM ServiceType ORDER BY service_name");
+    res.render("add_consultation", { clients, services });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Помилка бази даних: " + err.message);
+  }
+});
+
+app.post("/add_consultation", async (req, res) => {
+  try {
+    const { client_id, service_id, consultation_date, status, payment_status, notes } = req.body;
+    await pool.query(
+      `INSERT INTO Consultation (client_id, service_id, consultation_date, status, payment_status, notes)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [client_id, service_id || null, consultation_date.replace("T", " "),
+       status, payment_status || null, notes || null]
+    );
+    res.redirect("/consultations");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Помилка бази даних: " + err.message);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Сервер запущено на порту 3000");
 });

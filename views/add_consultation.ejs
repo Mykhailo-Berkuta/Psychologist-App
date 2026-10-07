@@ -1,0 +1,49 @@
+<%- include('partials/header', {title: 'Додати консультацію'}) %>
+<h1 class="my-4">Додати консультацію</h1>
+<form action="/add_consultation" method="post">
+  <div class="mb-3">
+    <label class="form-label">Клієнт</label>
+    <select class="form-select" name="client_id" required>
+      <% clients.forEach(function(c) { %>
+        <option value="<%= c.client_id %>"><%= c.full_name %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Послуга</label>
+    <select class="form-select" name="service_id">
+      <option value="">— не обрано —</option>
+      <% services.forEach(function(s) { %>
+        <option value="<%= s.service_id %>"><%= s.service_name %> (<%= s.format %>)</option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Дата і час</label>
+    <input type="datetime-local" class="form-control" name="consultation_date" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Статус</label>
+    <select class="form-select" name="status" required>
+      <option>Запланована</option>
+      <option>Проведена</option>
+      <option>Скасована</option>
+      <option>Перенесена</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Оплата</label>
+    <select class="form-select" name="payment_status">
+      <option>Очікує оплати</option>
+      <option>Передоплата</option>
+      <option>Оплачено</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Нотатки</label>
+    <input type="text" class="form-control" name="notes">
+  </div>
+  <button type="submit" class="btn btn-success mb-4">Зберегти</button>
+  <a href="/consultations" class="btn btn-secondary mb-4">Скасувати</a>
+</form>
+<%- include('partials/footer') %>
