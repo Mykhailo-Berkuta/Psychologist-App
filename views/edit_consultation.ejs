@@ -1,0 +1,56 @@
+<%- include('partials/header', {title: 'Редагувати консультацію'}) %>
+<h1 class="my-4">Редагувати консультацію</h1>
+<form id="editForm">
+  <div class="mb-3">
+    <label class="form-label">Клієнт</label>
+    <select class="form-select" name="client_id" required>
+      <% clients.forEach(function(c) { %>
+        <option value="<%= c.client_id %>" <%= c.client_id === consultation.client_id ? "selected" : "" %>><%= c.full_name %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Послуга</label>
+    <select class="form-select" name="service_id">
+      <option value="">— не обрано —</option>
+      <% services.forEach(function(s) { %>
+        <option value="<%= s.service_id %>" <%= s.service_id === consultation.service_id ? "selected" : "" %>><%= s.service_name %> (<%= s.format %>)</option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Дата і час</label>
+    <input type="datetime-local" class="form-control" name="consultation_date" value="<%= dateValue %>" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Статус</label>
+    <select class="form-select" name="status" required>
+      <% ["Запланована", "Проведена", "Скасована", "Перенесена"].forEach(function(s) { %>
+        <option <%= consultation.status === s ? "selected" : "" %>><%= s %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Оплата</label>
+    <select class="form-select" name="payment_status">
+      <% ["Очікує оплати", "Передоплата", "Оплачено"].forEach(function(s) { %>
+        <option <%= consultation.payment_status === s ? "selected" : "" %>><%= s %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Нотатки</label>
+    <input type="text" class="form-control" name="notes" value="<%= consultation.notes || '' %>">
+  </div>
+  <button type="submit" class="btn btn-success mb-4">Зберегти зміни</button>
+  <a href="/consultations" class="btn btn-secondary mb-4">Скасувати</a>
+</form>
+
+<script>
+document.getElementById("editForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  sendRequest("/consultations/<%= consultation.consultation_id %>", "PUT", data);
+});
+</script>
+<%- include('partials/footer') %>
