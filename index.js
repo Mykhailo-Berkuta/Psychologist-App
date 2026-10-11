@@ -12,6 +12,7 @@ app.get("/", (req, res) => res.redirect("/clients"));
 app.use("/", require("./routes/clients"));
 app.use("/", require("./routes/services"));
 app.use("/", require("./routes/consultations"));
+app.use("/", require("./routes/stats"));
 
 app.listen(3000, () => {
   console.log("Сервер запущено на порту 3000");

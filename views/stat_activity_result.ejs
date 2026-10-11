@@ -1,0 +1,42 @@
+<%- include('partials/header', {title: 'Аналіз послуг за період'}) %>
+<% const fmt = (d) => d.split("-").reverse().join("."); %>
+<% const sum = (f) => stats.reduce((a, s) => a + Number(s[f]), 0); %>
+<h1 class="my-4">Аналіз послуг за період</h1>
+<p>
+  <b>Період:</b> з <%= fmt(startDate) %> по <%= fmt(endDate) %><br>
+  <b>Дата формування:</b> <%= today %>
+</p>
+<div class="table-responsive">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Послуга</th><th>Формат</th><th>Ціна (грн)</th>
+      <th>Усього консультацій</th><th>Проведено</th><th>Скасовано</th><th>Дохід (грн)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% stats.forEach(function(s) { %>
+      <tr>
+        <td><%= s.service_name %></td>
+        <td><%= s.format %></td>
+        <td><%= Number(s.price).toFixed(2) %></td>
+        <td><%= s.total %></td>
+        <td><%= s.held %></td>
+        <td><%= s.cancelled %></td>
+        <td><%= Number(s.income).toFixed(2) %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+  <tfoot>
+    <tr class="table-secondary fw-bold">
+      <td colspan="3">Разом</td>
+      <td><%= sum("total") %></td>
+      <td><%= sum("held") %></td>
+      <td><%= sum("cancelled") %></td>
+      <td><%= sum("income").toFixed(2) %></td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<a href="/stat_activity" class="btn btn-secondary mb-4">Обрати інший період</a>
+<%- include('partials/footer') %>

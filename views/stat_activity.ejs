@@ -1,0 +1,17 @@
+<%- include('partials/header', {title: 'Аналіз послуг за період'}) %>
+<h1 class="my-4">Аналіз послуг за період</h1>
+<p class="text-muted">Оберіть період, за який потрібно сформувати статистику.</p>
+<form action="/stat_activity" method="post" class="row g-3">
+  <div class="col-md-4">
+    <label class="form-label">Дата «з»</label>
+    <input type="date" class="form-control" name="startDate" required>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Дата «по»</label>
+    <input type="date" class="form-control" name="endDate" required>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-success">Отримати дані</button>
+  </div>
+</form>
+<%- include('partials/footer') %>

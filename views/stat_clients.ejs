@@ -1,0 +1,26 @@
+<%- include('partials/header', {title: 'Статистика клієнтів'}) %>
+<h1 class="my-4">Статистика клієнтів</h1>
+<p class="text-muted">Кількість консультацій кожного клієнта та сума оплачених консультацій.</p>
+<div class="table-responsive">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Клієнт</th><th>Статус</th><th>Усього консультацій</th>
+      <th>Проведено</th><th>Скасовано</th><th>Сплачено (грн)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% stats.forEach(function(s) { %>
+      <tr>
+        <td><%= s.full_name %></td>
+        <td><%= s.status %></td>
+        <td><%= s.total %></td>
+        <td><%= s.held %></td>
+        <td><%= s.cancelled %></td>
+        <td><%= Number(s.paid).toFixed(2) %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+</div>
+<%- include('partials/footer') %>
