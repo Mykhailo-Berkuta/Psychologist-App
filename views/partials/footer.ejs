@@ -1,3 +1,24 @@
 </div>
+<script>
+// Надсилає запит на сервер і переходить на сторінку з відповіді
+async function sendRequest(url, method, body) {
+  try {
+    const res = await fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const result = await res.json();
+    if (res.ok) {
+      window.location.href = result.redirect;
+    } else {
+      alert("Помилка: " + result.error);
+    }
+  } catch (e) {
+    console.error(e);
+    alert("Не вдалося з'єднатися із сервером");
+  }
+}
+</script>
 </body>
 </html>

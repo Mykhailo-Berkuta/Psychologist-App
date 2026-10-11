@@ -5,7 +5,7 @@
   <thead>
     <tr>
       <th>ID</th><th>ПІБ</th><th>Дата народження</th><th>Телефон</th>
-      <th>Email</th><th>Джерело</th><th>Статус</th><th>Консультації</th>
+      <th>Email</th><th>Джерело</th><th>Статус</th><th>Консультації</th><th>Дії</th>
     </tr>
   </thead>
   <tbody>
@@ -19,10 +19,22 @@
         <td><%= c.contact_source || "—" %></td>
         <td><%= c.status %></td>
         <td><a href="/client/<%= c.client_id %>/consultations" class="btn btn-primary btn-sm">Переглянути</a></td>
+        <td class="text-nowrap">
+          <a href="/edit_client/<%= c.client_id %>" class="btn btn-warning btn-sm">Оновити</a>
+          <button class="btn btn-danger btn-sm" data-id="<%= c.client_id %>" onclick="deleteClient(this.dataset.id)">Видалити</button>
+        </td>
       </tr>
     <% }); %>
   </tbody>
 </table>
 </div>
 <a href="/add_client" class="btn btn-success mb-4">Додати клієнта</a>
+
+<script>
+function deleteClient(id) {
+  if (confirm("Видалити клієнта? Усі його консультації також будуть видалені.")) {
+    sendRequest("/clients/" + id, "DELETE");
+  }
+}
+</script>
 <%- include('partials/footer') %>
